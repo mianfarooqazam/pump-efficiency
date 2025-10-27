@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Pump Efficiency Calculator",
-  description: "Calculate pump efficiency and performance metrics for industrial applications",
+  title: "Pump Efficiency Dashboard",
+  description: "Pump Efficiency Dashboard",
 };
 
 export default function RootLayout({
