@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PIPING_CONSTANTS } from "@/utils/constants";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -233,6 +234,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K1"
                   />
+                  {formData.k1 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K1 * parseFloat(formData.k1)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -247,6 +253,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K2"
                   />
+                  {formData.k2 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K2 * parseFloat(formData.k2)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -261,6 +272,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K3"
                   />
+                  {formData.k3 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K3 * parseFloat(formData.k3)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -275,6 +291,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K4"
                   />
+                  {formData.k4 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K4 * parseFloat(formData.k4)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -289,6 +310,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K5"
                   />
+                  {formData.k5 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K5 * parseFloat(formData.k5)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -303,6 +329,11 @@ export default function Home() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K6"
                   />
+                  {formData.k6 && (
+                    <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      Net: {(PIPING_CONSTANTS.K6 * parseFloat(formData.k6)).toFixed(2)}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
