@@ -58,15 +58,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
+          {/* Header */}
+          <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Pump Efficiency Dashboard
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
             Enter pump system parameters
-          </p>
-        </div>
+            </p>
+          </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Side - Form */}
@@ -364,9 +364,19 @@ export default function Home() {
 
           {/* Right Side - Results */}
           <div className="flex-1 rounded-lg p-6 md:p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
-              Results
-            </h2>
+            <div className="space-y-4">
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-green-900 dark:text-green-300 mb-2">
+                  Pump Efficiency
+                </h3>
+              </div>
+              
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+              <h3 className="text-lg font-medium text-green-900 dark:text-green-300 mb-2">
+                  Overall Efficiency
+                </h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>
