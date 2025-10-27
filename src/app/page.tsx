@@ -55,12 +55,13 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Form */}
-        <div className="max-w-2xl mx-auto rounded-lg p-6 md:p-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Side - Form */}
+          <div className="flex-1 rounded-lg p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* ƞmotor Input at the top */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-              <label className="block text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 ƞmotor (Motor Efficiency)
               </label>
               <input
@@ -70,7 +71,7 @@ export default function Home() {
                 max="1"
                 value={formData.nmotor}
                 onChange={(e) => handleInputChange("nmotor", e.target.value)}
-                className="w-full px-3 py-2 border border-blue-300 dark:border-blue-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-800 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Enter motor efficiency"
               />
             </div>
@@ -218,6 +219,19 @@ export default function Home() {
               </button>
             </div>
           </form>
+          </div>
+
+          {/* Vertical Line */}
+          <div className="hidden lg:flex lg:items-center lg:justify-center">
+            <div className="h-96 w-1 bg-gray-400 dark:bg-gray-500 rounded-full"></div>
+          </div>
+
+          {/* Right Side - Results */}
+          <div className="flex-1 rounded-lg p-6 md:p-8">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
+              Results
+            </h2>
+          </div>
         </div>
       </div>
     </div>
