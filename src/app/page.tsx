@@ -12,7 +12,13 @@ export default function Home() {
     pmotorInputPower: "",
     powerFactor: "",
     q: "",
-    pressureGuageValue: ""
+    pressureGuageValue: "",
+    k1: "",
+    k2: "",
+    k3: "",
+    k4: "",
+    k5: "",
+    k6: ""
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -38,7 +44,13 @@ export default function Home() {
       pmotorInputPower: "",
       powerFactor: "",
       q: "",
-      pressureGuageValue: ""
+      pressureGuageValue: "",
+      k1: "",
+      k2: "",
+      k3: "",
+      k4: "",
+      k5: "",
+      k6: ""
     });
   };
 
@@ -199,6 +211,99 @@ export default function Home() {
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter pressure"
                 />
+              </div>
+            </div>
+
+            {/* Piping Network Section */}
+            <div className="pt-6">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                Piping Network
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K1 (90° elbow)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k1}
+                    onChange={(e) => handleInputChange("k1", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K1"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K2 (gate valve)(open)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k2}
+                    onChange={(e) => handleInputChange("k2", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K2"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K3 (foot valve)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k3}
+                    onChange={(e) => handleInputChange("k3", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K3"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K4 (swing check valve)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k4}
+                    onChange={(e) => handleInputChange("k4", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K4"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K5 Entrance (sharp)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k5}
+                    onChange={(e) => handleInputChange("k5", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K5"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    K6 (exit)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={formData.k6}
+                    onChange={(e) => handleInputChange("k6", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                    placeholder="Enter K6"
+                  />
+                </div>
               </div>
             </div>
 
