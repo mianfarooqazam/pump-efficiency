@@ -376,6 +376,12 @@ export default function Home() {
                   Overall Efficiency
                 </h3>
               </div>
+
+              <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+              <h3 className="text-lg font-medium text-green-900 dark:text-green-300 mb-2">
+                  Minor Losses 
+                </h3>
+              </div>
             </div>
           </div>
         </div>
