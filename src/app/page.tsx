@@ -1,33 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { PIPING_CONSTANTS } from "@/utils/constants";
+import { usePumpStore } from "@/store/pumpStore";
 
 export default function Home() {
-  const [formData, setFormData] = useState({
-    nmotor: "0.85",
-    lengthOfPipe: "",
-    diaOfPipe: "",
-    depthOfWaterTable: "",
-    drawDown: "",
-    pmotorInputPower: "",
-    powerFactor: "",
-    q: "",
-    pressureGuageValue: "",
-    k1: "",
-    k2: "",
-    k3: "",
-    k4: "",
-    k5: "",
-    k6: ""
-  });
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
+  const { formData, updateField, resetForm } = usePumpStore();
 
   // Calculation function
   const calculateResults = () => {
@@ -121,32 +98,6 @@ export default function Home() {
 
   const results = calculateResults();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form data:", formData);
-    console.log("Results:", results);
-  };
-
-  const resetForm = () => {
-    setFormData({
-      nmotor: "0.85",
-      lengthOfPipe: "",
-      diaOfPipe: "",
-      depthOfWaterTable: "",
-      drawDown: "",
-      pmotorInputPower: "",
-      powerFactor: "",
-      q: "",
-      pressureGuageValue: "",
-      k1: "",
-      k2: "",
-      k3: "",
-      k4: "",
-      k5: "",
-      k6: ""
-    });
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -163,7 +114,7 @@ export default function Home() {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Side - Form */}
           <div className="flex-1 rounded-lg p-6 md:p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form className="space-y-6">
             {/* ƞmotor Input at the top */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -175,7 +126,7 @@ export default function Home() {
                 min="0"
                 max="1"
                 value={formData.nmotor}
-                onChange={(e) => handleInputChange("nmotor", e.target.value)}
+                onChange={(e) => updateField("nmotor", e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Enter motor efficiency"
               />
@@ -191,7 +142,7 @@ export default function Home() {
                   type="number"
                   step="0.01"
                   value={formData.lengthOfPipe}
-                  onChange={(e) => handleInputChange("lengthOfPipe", e.target.value)}
+                    onChange={(e) => updateField("lengthOfPipe", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter length"
                 />
@@ -205,7 +156,7 @@ export default function Home() {
                   type="number"
                   step="0.001"
                   value={formData.diaOfPipe}
-                  onChange={(e) => handleInputChange("diaOfPipe", e.target.value)}
+                    onChange={(e) => updateField("diaOfPipe", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter diameter"
                 />
@@ -222,7 +173,7 @@ export default function Home() {
                   type="number"
                   step="0.01"
                   value={formData.depthOfWaterTable}
-                  onChange={(e) => handleInputChange("depthOfWaterTable", e.target.value)}
+                  onChange={(e) => updateField("depthOfWaterTable", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter depth"
                 />
@@ -236,7 +187,7 @@ export default function Home() {
                   type="number"
                   step="0.01"
                   value={formData.drawDown}
-                  onChange={(e) => handleInputChange("drawDown", e.target.value)}
+                  onChange={(e) => updateField("drawDown", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter draw down"
                 />
@@ -253,7 +204,7 @@ export default function Home() {
                   type="number"
                   step="0.1"
                   value={formData.pmotorInputPower}
-                  onChange={(e) => handleInputChange("pmotorInputPower", e.target.value)}
+                  onChange={(e) => updateField("pmotorInputPower", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter power"
                 />
@@ -269,7 +220,7 @@ export default function Home() {
                   min="0"
                   max="1"
                   value={formData.powerFactor}
-                  onChange={(e) => handleInputChange("powerFactor", e.target.value)}
+                  onChange={(e) => updateField("powerFactor", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter power factor"
                 />
@@ -286,7 +237,7 @@ export default function Home() {
                   type="number"
                   step="0.1"
                   value={formData.q}
-                  onChange={(e) => handleInputChange("q", e.target.value)}
+                  onChange={(e) => updateField("q", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter flow rate"
                 />
@@ -300,7 +251,7 @@ export default function Home() {
                   type="number"
                   step="0.1"
                   value={formData.pressureGuageValue}
-                  onChange={(e) => handleInputChange("pressureGuageValue", e.target.value)}
+                  onChange={(e) => updateField("pressureGuageValue", e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                   placeholder="Enter pressure"
                 />
@@ -322,7 +273,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k1}
-                    onChange={(e) => handleInputChange("k1", e.target.value)}
+                    onChange={(e) => updateField("k1", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K1"
                   />
@@ -341,7 +292,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k2}
-                    onChange={(e) => handleInputChange("k2", e.target.value)}
+                    onChange={(e) => updateField("k2", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K2"
                   />
@@ -360,7 +311,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k3}
-                    onChange={(e) => handleInputChange("k3", e.target.value)}
+                    onChange={(e) => updateField("k3", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K3"
                   />
@@ -379,7 +330,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k4}
-                    onChange={(e) => handleInputChange("k4", e.target.value)}
+                    onChange={(e) => updateField("k4", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K4"
                   />
@@ -398,7 +349,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k5}
-                    onChange={(e) => handleInputChange("k5", e.target.value)}
+                    onChange={(e) => updateField("k5", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K5"
                   />
@@ -417,7 +368,7 @@ export default function Home() {
                     type="number"
                     step="0.01"
                     value={formData.k6}
-                    onChange={(e) => handleInputChange("k6", e.target.value)}
+                    onChange={(e) => updateField("k6", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
                     placeholder="Enter K6"
                   />
@@ -428,23 +379,6 @@ export default function Home() {
                   )}
                 </div>
               </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <button
-                type="submit"
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={resetForm}
-                className="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-6 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Reset
-              </button>
             </div>
           </form>
           </div>
