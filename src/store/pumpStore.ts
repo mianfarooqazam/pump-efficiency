@@ -19,10 +19,22 @@ interface PumpFormData {
   k6: string;
 }
 
+interface TableRow {
+  id: string;
+  pmotorInputPower: string;
+  q: string;
+  pressureGuageValue: string;
+}
+
 interface PumpStore {
   formData: PumpFormData;
+  tableData: TableRow[];
   updateField: (field: keyof PumpFormData, value: string) => void;
   resetForm: () => void;
+  addTableRow: (row: Omit<TableRow, 'id'>) => void;
+  updateTableRow: (id: string, row: Omit<TableRow, 'id'>) => void;
+  deleteTableRow: (id: string) => void;
+  clearTable: () => void;
 }
 
 const initialFormData: PumpFormData = {
@@ -47,6 +59,7 @@ export const usePumpStore = create<PumpStore>()(
   persist(
     (set) => ({
       formData: initialFormData,
+      tableData: [],
       
       updateField: (field, value) =>
         set((state) => ({
@@ -59,6 +72,31 @@ export const usePumpStore = create<PumpStore>()(
       resetForm: () =>
         set({
           formData: initialFormData
+        }),
+      
+      addTableRow: (row) =>
+        set((state) => ({
+          tableData: [
+            ...state.tableData,
+            { ...row, id: Date.now().toString() }
+          ]
+        })),
+      
+      updateTableRow: (id, row) =>
+        set((state) => ({
+          tableData: state.tableData.map((item) =>
+            item.id === id ? { ...row, id } : item
+          )
+        })),
+      
+      deleteTableRow: (id) =>
+        set((state) => ({
+          tableData: state.tableData.filter((row) => row.id !== id)
+        })),
+      
+      clearTable: () =>
+        set({
+          tableData: []
         })
     }),
     {

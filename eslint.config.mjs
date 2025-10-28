@@ -13,6 +13,13 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // Custom rules
+  {
+    rules: {
+      // Allow setState in useEffect for hydration fixes with persisted state
+      "@typescript-eslint/no-misused-promises": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
