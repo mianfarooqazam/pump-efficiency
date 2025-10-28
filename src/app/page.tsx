@@ -7,7 +7,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 export default function Home() {
   "use no memo";
-  const { formData, updateField, tableData, addTableRow, updateTableRow, deleteTableRow, clearTable } = usePumpStore();
+  const { formData, updateField, tableData, addTableRow, updateTableRow, deleteTableRow } = usePumpStore();
   const [isMounted, setIsMounted] = useState(false);
   const [editingRowId, setEditingRowId] = useState<string | null>(null);
   const [editingValues, setEditingValues] = useState({
@@ -217,8 +217,7 @@ export default function Home() {
   }, [formData.lengthOfPipe, formData.diaOfPipe, formData.depthOfWaterTable, formData.drawDown, formData.nmotor, formData.k1, formData.k2, formData.k3, formData.k4, formData.k5, formData.k6, formData.q, formData.pmotorInputPower, formData.pressureGuageValue]);
   
   
-  // Prepare chart data for H(m) vs Q(l/min)
-  // Q(l/min) = Q(m³/hour) × 16.67
+  // Prepare chart data for H(m) vs Q(m³/sec)
   // Include both form data point and table data points
   const allChartData = [];
   
@@ -227,9 +226,11 @@ export default function Home() {
     const formCalc = calculateHForRow(formData.pmotorInputPower, formData.q, formData.pressureGuageValue);
     const formQLMin = parseFloat(formData.q) * 16.67;
     allChartData.push({
-      name: `Form Data`,
+      name: `Q: ${formData.q}`,
       H: parseFloat(formCalc.H),
       Q_lmin: formQLMin,
+      Q_m3sec: parseFloat(formCalc.qM3Sec),
+      Q_m3hour: parseFloat(formData.q),
       v: parseFloat(formCalc.v),
       re: parseFloat(formCalc.re),
       flowType: formCalc.flowType,
@@ -252,6 +253,8 @@ export default function Home() {
       name: `Q: ${row.q}`,
       H: parseFloat(calc.H),
       Q_lmin: qLMin,
+      Q_m3sec: parseFloat(calc.qM3Sec),
+      Q_m3hour: parseFloat(row.q),
       v: parseFloat(calc.v),
       re: parseFloat(calc.re),
       flowType: calc.flowType,
@@ -804,54 +807,37 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Data Table - Hidden */}
-          {false && isMounted && tableData.length > 0 && (
+          {/* Data Table - Simplified */}
+          {isMounted && tableData.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 overflow-x-auto">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Data Points
-                </h3>
-                <button
-                  onClick={clearTable}
-                  className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors text-sm"
-                >
-                  Clear All
-                </button>
-              </div>
+              
               <table className="w-full text-sm text-left">
                 <thead className="text-xs uppercase bg-gray-100 dark:bg-gray-700">
                   <tr>
+                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Sr No</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">P motor (kW)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (m³/hour)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Pressure (psi)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (m³/sec)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (l/min)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">H (m)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">v (m/s)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Re</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Flow Type</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">f</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">hf (m)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">hminor (m)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Hydraulic Power (kW)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Shaft Power (kW)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Pump Eff. (%)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Overall Eff. (%)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {tableData.map((row) => {
+                  {tableData.map((row, index) => {
                     const isEditing = editingRowId === row.id;
                     const calc = calculateHForRow(
                       isEditing ? editingValues.pmotorInputPower : row.pmotorInputPower,
                       isEditing ? editingValues.q : row.q,
                       isEditing ? editingValues.pressureGuageValue : row.pressureGuageValue
                     );
-                    const qLMin = (parseFloat(isEditing ? editingValues.q : row.q) * 16.67).toFixed(2);
                     
                     return (
                       <tr key={row.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                        {/* Sr No */}
+                        <td className="px-4 py-3 text-gray-900 dark:text-white font-medium">{index + 1}</td>
+                        
                         {/* P motor - Editable */}
                         <td className="px-4 py-3">
                           {isEditing ? (
@@ -898,17 +884,7 @@ export default function Home() {
                         </td>
                         
                         {/* Calculated fields - Read only */}
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.qM3Sec}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{qLMin}</td>
                         <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.H}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.v}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.re}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.flowType}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.f}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.hf}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.hminor}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.hydraulicPower}</td>
-                        <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.shaftPower}</td>
                         <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.pumpEfficiency}</td>
                         <td className="px-4 py-3 text-gray-900 dark:text-white">{calc.overallEfficiency}</td>
                         
@@ -977,9 +953,9 @@ export default function Home() {
                       return (
                         <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 p-3 rounded shadow-lg">
                           <p className="font-semibold text-gray-900 dark:text-white">
-                            {data.isFormData ? "Form Data Point" : `Table Data: ${data.name}`}
+                            Q: {data.Q_m3hour.toFixed(2)} m³/hour
                           </p>
-                          <p className="text-sm text-gray-700 dark:text-gray-300">Q: {data.Q_lmin.toFixed(2)} l/min</p>
+                          <p className="text-sm text-gray-700 dark:text-gray-300">Q (l/min): {data.Q_lmin.toFixed(2)}</p>
                           <p className="text-sm text-gray-700 dark:text-gray-300">H: {data.H.toFixed(2)} m</p>
                           <p className="text-sm text-gray-700 dark:text-gray-300">Pump Eff: {data.pumpEfficiency.toFixed(2)}%</p>
                           <p className="text-sm text-gray-700 dark:text-gray-300">Overall Eff: {data.overallEfficiency.toFixed(2)}%</p>
@@ -995,15 +971,16 @@ export default function Home() {
                     stroke="#16a34a" 
                     strokeWidth={2}
                     dot={(props) => {
-                      const { cx, cy, index } = props;
+                      const { cx, cy, payload } = props;
+                      const isFormData = payload.isFormData;
                       return (
                         <circle
-                          key={`dot-${index}`}
+                          key={`dot-${payload.Q_m3hour}`}
                           cx={cx}
                           cy={cy}
-                          r={5}
-                          fill="#16a34a"
-                          stroke="#15803d"
+                          r={isFormData ? 7 : 5}
+                          fill={isFormData ? "#ef4444" : "#16a34a"}
+                          stroke={isFormData ? "#dc2626" : "#15803d"}
                           strokeWidth={2}
                         />
                       );
