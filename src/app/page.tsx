@@ -216,110 +216,6 @@ export default function Home() {
     };
   }, [formData.lengthOfPipe, formData.diaOfPipe, formData.depthOfWaterTable, formData.drawDown, formData.nmotor, formData.k1, formData.k2, formData.k3, formData.k4, formData.k5, formData.k6, formData.q, formData.pmotorInputPower, formData.pressureGuageValue]);
   
-  // Log results to console whenever they change
-  useEffect(() => {
-    if (isMounted) {
-      console.log('\n╔═══════════════════════════════════════════════════════════╗');
-      console.log('║              REAL-TIME RESULTS (Main Form)              ║');
-      console.log('╚═══════════════════════════════════════════════════════════╝\n');
-      
-      console.table({
-        'Results': {
-          'Pump Efficiency (%)': results.pumpEfficiency,
-          'Overall Efficiency (%)': results.overallEfficiency,
-          'Minor Losses (m)': results.minorLosses
-        }
-      });
-      
-      console.table({
-        'Additional Calculations': {
-          'Friction Loss hf (m)': results.hf,
-          'Velocity v (m/sec)': results.v,
-          'Reynolds Number Re': results.re,
-          'Friction Factor f': results.f,
-          'Hydraulic Power (kW)': results.hydraulicPower,
-          'Total Head H (m)': results.totalHead
-        }
-      });
-      
-      console.log('═══════════════════════════════════════════════════════════\n');
-    }
-  }, [isMounted, results.pumpEfficiency, results.overallEfficiency, results.minorLosses, results.hf, results.v, results.re, results.f, results.hydraulicPower, results.totalHead]);
-  
-  // Log ALL data points to console (form + table data)
-  useEffect(() => {
-    if (isMounted) {
-      const allDataForConsole: Record<string, Record<string, string>> = {};
-      
-      // Add form data point if available
-      if (formData.q && formData.pmotorInputPower && formData.pressureGuageValue) {
-        const formCalc = calculateHForRow(formData.pmotorInputPower, formData.q, formData.pressureGuageValue);
-        const formQLMin = (parseFloat(formData.q) * 16.67).toFixed(2);
-        
-        allDataForConsole['🔴 FORM DATA'] = {
-          'P motor (kW)': formData.pmotorInputPower,
-          'Q (m³/hour)': formData.q,
-          'Q (m³/sec)': formCalc.qM3Sec,
-          'Q (l/min)': formQLMin,
-          'Pressure (Ppsi)': formData.pressureGuageValue,
-          'Pressure Head (m)': formCalc.pressureHead,
-          'H (m)': formCalc.H,
-          'v (m/s)': formCalc.v,
-          'Re': formCalc.re,
-          'Flow Type': formCalc.flowType,
-          'f': formCalc.f,
-          'hf (m)': formCalc.hf,
-          'hminor (m)': formCalc.hminor,
-          'Hydraulic Power (kW)': formCalc.hydraulicPower,
-          'Shaft Power (kW)': formCalc.shaftPower,
-          'Pump Eff. (%)': formCalc.pumpEfficiency,
-          'Overall Eff. (%)': formCalc.overallEfficiency
-        };
-      }
-      
-      // Add table data points
-      tableData.forEach((row, index) => {
-        const calc = calculateHForRow(row.pmotorInputPower, row.q, row.pressureGuageValue);
-        const qLMin = (parseFloat(row.q) * 16.67).toFixed(2);
-        
-        allDataForConsole[`🟢 Table Row ${index + 1}`] = {
-          'P motor (kW)': row.pmotorInputPower,
-          'Q (m³/hour)': row.q,
-          'Q (m³/sec)': calc.qM3Sec,
-          'Q (l/min)': qLMin,
-          'Pressure (Ppsi)': row.pressureGuageValue,
-          'Pressure Head (m)': calc.pressureHead,
-          'H (m)': calc.H,
-          'v (m/s)': calc.v,
-          'Re': calc.re,
-          'Flow Type': calc.flowType,
-          'f': calc.f,
-          'hf (m)': calc.hf,
-          'hminor (m)': calc.hminor,
-          'Hydraulic Power (kW)': calc.hydraulicPower,
-          'Shaft Power (kW)': calc.shaftPower,
-          'Pump Eff. (%)': calc.pumpEfficiency,
-          'Overall Eff. (%)': calc.overallEfficiency
-        };
-      });
-      
-      // Only log if there's at least one data point
-      if (Object.keys(allDataForConsole).length > 0) {
-        console.log('\n╔═══════════════════════════════════════════════════════════╗');
-        console.log('║         ALL DATA POINTS (Form + Table Combined)         ║');
-        console.log('╚═══════════════════════════════════════════════════════════╝\n');
-        
-        console.table(allDataForConsole);
-        
-        const totalPoints = Object.keys(allDataForConsole).length;
-        const hasFormData = formData.q && formData.pmotorInputPower && formData.pressureGuageValue;
-        console.log(`\n📊 Total Data Points: ${totalPoints}`);
-        console.log(`   🔴 Form Data: ${hasFormData ? '1' : '0'}`);
-        console.log(`   🟢 Table Data: ${tableData.length}`);
-        console.log('═══════════════════════════════════════════════════════════\n');
-      }
-    }
-  }, [isMounted, tableData, formData.q, formData.pmotorInputPower, formData.pressureGuageValue, calculateHForRow]);
   
   // Prepare chart data for H(m) vs Q(l/min)
   // Q(l/min) = Q(m³/hour) × 16.67
@@ -438,7 +334,7 @@ export default function Home() {
           'Draw down (m)': drawDown,
           'P motor Input power (kW)': pmotorInputPower,
           'Q (m³/hour)': qM3Hour,
-          'Pressure Gauge (Ppsi)': pressureGuageValue,
+          'Pressure Gauge (psi)': pressureGuageValue,
           'ƞ motor': nmotor
         }
       });
@@ -673,7 +569,7 @@ export default function Home() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Pressure Guage Value (Ppsi)
+                  Pressure Gauge Value (psi)
                 </label>
                 <input
                   type="number"
@@ -852,14 +748,11 @@ export default function Home() {
         {/* Table and Chart Section */}
         <div className="mt-12">
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
-            Performance Analysis
+            Recorded On-Site Measurements
             </h2>
           
           {/* Add Row Form */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              Add Data Point
-            </h3>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -889,7 +782,7 @@ export default function Home() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Pressure Gauge Value (Ppsi)
+                  Pressure Gauge Value (psi)
                 </label>
                 <input
                   type="number"
@@ -911,8 +804,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Data Table */}
-          {isMounted && tableData.length > 0 && (
+          {/* Data Table - Hidden */}
+          {false && isMounted && tableData.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6 overflow-x-auto">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -930,7 +823,7 @@ export default function Home() {
                   <tr>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">P motor (kW)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (m³/hour)</th>
-                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Pressure (Ppsi)</th>
+                    <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Pressure (psi)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (m³/sec)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">Q (l/min)</th>
                     <th className="px-4 py-3 text-gray-700 dark:text-gray-300">H (m)</th>
@@ -1064,7 +957,7 @@ export default function Home() {
           {/* Chart: H(m) vs Q(l/min) */}
           {isMounted && chartData.length > 0 && (
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 text-center">
                 Pump Curve
               </h3>
               <ResponsiveContainer width="100%" height={500}>
@@ -1102,15 +995,15 @@ export default function Home() {
                     stroke="#16a34a" 
                     strokeWidth={2}
                     dot={(props) => {
-                      const { cx, cy, payload, index } = props;
+                      const { cx, cy, index } = props;
                       return (
                         <circle
-                          key={`dot-${index}-${payload.Q_lmin}`}
+                          key={`dot-${index}`}
                           cx={cx}
                           cy={cy}
-                          r={payload.isFormData ? 8 : 5}
-                          fill={payload.isFormData ? "#dc2626" : "#16a34a"}
-                          stroke={payload.isFormData ? "#991b1b" : "#15803d"}
+                          r={5}
+                          fill="#16a34a"
+                          stroke="#15803d"
                           strokeWidth={2}
                         />
                       );
@@ -1119,16 +1012,6 @@ export default function Home() {
                   />
                 </LineChart>
               </ResponsiveContainer>
-              <div className="mt-4 flex gap-4 justify-center text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 rounded-full bg-red-600 border-2 border-red-800"></div>
-                  <span className="text-gray-700 dark:text-gray-300">Form Data Point</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-600 border-2 border-green-800"></div>
-                  <span className="text-gray-700 dark:text-gray-300">Table Data Points</span>
-                </div>
-              </div>
             </div>
           )}
         </div>
